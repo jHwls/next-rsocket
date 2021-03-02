@@ -27,8 +27,8 @@ function Test() {
     if (client == null) {
       const c = new RSocketClient({
         setup: {
-          keepAlive: 120000,
-          lifetime: 180000,
+          keepAlive: 5_000,
+          lifetime: 864_000_000,
           dataMimeType: APPLICATION_JSON.string,
           metadataMimeType: MESSAGE_RSOCKET_COMPOSITE_METADATA.string
         },
@@ -73,6 +73,7 @@ function Test() {
                 console.log(error);
               },
               onNext: (payload) => {
+                console.log(payload);
                 const json = payload.data.toString();
                 console.log(json);
               },
