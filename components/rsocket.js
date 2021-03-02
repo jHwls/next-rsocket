@@ -2,6 +2,7 @@ import * as React from "react";
 
 import RSocketWebSocketClient from "rsocket-websocket-client";
 import {
+  toBuffer,
   BufferEncoders,
   MESSAGE_RSOCKET_COMPOSITE_METADATA,
   RSocketClient
@@ -18,6 +19,12 @@ import { Flowable } from "rsocket-flowable/build";
 
 const wsUrl = process.env.NEXT_PUBLIC_URL;
 const randomJwt = process.env.NEXT_PUBLIC_JWT;
+
+const buffer = toBuffer(
+  JSON.stringify({ action: "load", symbols: ["SPLK", "CSCO"] })
+);
+
+console.log(buffer);
 
 function Test() {
   const [client, setClient] = React.useState(null);
@@ -47,9 +54,7 @@ function Test() {
           socket
             .requestChannel(
               Flowable.just({
-                data: Buffer.from(
-                  JSON.stringify({ action: "load", symbols: ["SPLK", "CSCO"] })
-                ),
+                data: buffer,
                 metadata: encodeCompositeMetadata([
                   [MESSAGE_RSOCKET_ROUTING, encodeRoute("iex")],
                   [
