@@ -33,6 +33,8 @@ function Test() {
   const [socket, setSocket] = React.useState(null);
   const [subId, setSubId] = React.useState(null);
 
+  console.log("SUBID", subId);
+
   React.useEffect(() => {
     if (client == null) {
       const c = new RSocketClient({
@@ -68,7 +70,7 @@ function Test() {
               })
             )
             .subscribe({
-              onComplete: () => console.log("complete"),
+              onComplete: (payload) => console.log("complete" + payload),
               onError: (error) => {
                 if (
                   error &&
@@ -82,9 +84,8 @@ function Test() {
               },
               onNext: (payload) => {
                 console.log("ON NEXT", payload);
-                const data = payload.data.toString();
-                console.log(data);
-                const message = payload.data.toJSON();
+                const message = JSON.parse(payload.data.toString());
+                console.log("JSON", message);
                 switch (message.messageType) {
                   case "I":
                     setSubId(message.data.subscriptionId);
@@ -107,8 +108,8 @@ function Test() {
 
   React.useEffect(() => {
     console.log(client, subId, client?._config?.transport?._status?.kind);
-    return;
-    if (!subID || client?._config?.transport?._status?.kind !== "CONNECTED")
+    // return;
+    if (!subId || client?._config?.transport?._status?.kind !== "CONNECTED")
       return;
 
     console.log("SEND ONE");
