@@ -6,6 +6,7 @@ import {
   toBuffer,
   BufferEncoders,
   FRAME_TYPES,
+  FLAGS,
   MESSAGE_RSOCKET_COMPOSITE_METADATA,
   RSocketClient
 } from "rsocket-core";
@@ -121,7 +122,8 @@ function Test() {
           subscriptionId: subId,
           symbols: ["AAPL"]
         })
-      )
+      ),
+      flags: FLAGS.NEXT
     });
   }, [client, subId]);
 
